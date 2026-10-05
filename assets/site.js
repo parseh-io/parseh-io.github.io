@@ -13,13 +13,16 @@
   root.classList.add('js');
 
   // ── the curtain ──────────────────────────────────────────────────────
+  // It is either down or up.  One turn of the wheel, one key, one swipe sends
+  // it all the way; nothing leaves it half open.
   var curtain = document.querySelector('.curtain');
   if (curtain) {
     var bar = curtain.querySelector('.bar');
     var hero = curtain.querySelector('.hero');
+    var run = function () { return curtain.offsetHeight - bar.offsetHeight; };
     var set = function () {
-      var run = curtain.offsetHeight - bar.offsetHeight;
-      var p = run > 0 ? Math.min(1, Math.max(0, window.scrollY / run)) : 1;
+      var r = run();
+      var p = r > 0 ? Math.min(1, Math.max(0, window.scrollY / r)) : 1;
       root.style.setProperty('--p', p.toFixed(4));
       curtain.classList.toggle('rising', p > .5 && p < .98);
       curtain.classList.toggle('up', p >= .98);
@@ -27,23 +30,84 @@
       if (hero) hero.inert = p >= .98;
       bar.inert = p <= .5;
     };
+
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var moving = false;     // the curtain is on its way
+    var from = 0, to = 0, t0 = 0;
+    var ease = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    var step = function (now) {
+      var x = Math.min(1, (now - t0) / 620);
+      window.scrollTo(0, from + (to - from) * ease(x));
+      set();
+      if (x < 1) requestAnimationFrame(step); else moving = false;
+    };
+    var send = function (up) {          // up: the curtain goes up
+      if (moving) return;
+      to = up ? run() : 0;
+      from = window.scrollY;
+      if (Math.abs(to - from) < 1) return;
+      if (calm) { window.scrollTo(0, to); set(); return; }
+      moving = true; t0 = performance.now();
+      requestAnimationFrame(step);
+    };
+    var isDown = function () { return window.scrollY < 1; };
+    var atSeam = function () { return window.scrollY <= run() + 1; };   // up, and the paper at its top
+
+    // the wheel: a touchpad keeps sending turns long after the fingers have
+    // left, so one gesture is every turn until a pause
+    var lastTurn = 0, spent = false;
+    window.addEventListener('wheel', function (e) {
+      if (e.ctrlKey) return;                       // a pinch to zoom
+      var now = performance.now();
+      if (now - lastTurn > 140) spent = false;
+      lastTurn = now;
+      if (moving || spent) { e.preventDefault(); return; }
+      if (e.deltaY > 0 && window.scrollY < run() - 1) { e.preventDefault(); spent = true; send(true); }
+      else if (e.deltaY < 0 && atSeam() && !isDown()) { e.preventDefault(); spent = true; send(false); }
+    }, {passive: false});
+
+    window.addEventListener('keydown', function (e) {
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      var el = document.activeElement;
+      if (el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return;
+      var down = e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey && !(el && /^(A|BUTTON)$/.test(el.tagName)));
+      var up = e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Home' || (e.key === ' ' && e.shiftKey);
+      if (down && window.scrollY < run() - 1) { e.preventDefault(); send(true); }
+      else if (up && atSeam() && !isDown()) { e.preventDefault(); send(false); }
+    });
+
+    // a finger: the page follows it, and when it lets go between the two
+    // states the curtain finishes the way it was going
+    var touching = false, lastY = 0, dir = 0, settle = 0;
+    var finish = function () {
+      clearTimeout(settle);
+      settle = setTimeout(function () {
+        if (touching || moving) return;
+        var y = window.scrollY;
+        if (y > 1 && y < run() - 1) send(dir >= 0);
+      }, 90);
+    };
+    window.addEventListener('touchstart', function () { touching = true; }, {passive: true});
+    window.addEventListener('touchend', function () { touching = false; finish(); }, {passive: true});
+    window.addEventListener('touchcancel', function () { touching = false; finish(); }, {passive: true});
+
     var waiting = false;
-    var later = function () {
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      if (y !== lastY) { dir = y > lastY ? 1 : -1; lastY = y; }
+      if (!moving) finish();
       if (waiting) return;
       waiting = true;
       requestAnimationFrame(function () { waiting = false; set(); });
-    };
-    window.addEventListener('scroll', later, {passive: true});
-    window.addEventListener('resize', later);
+    }, {passive: true});
+    window.addEventListener('resize', set);
     set();
 
-    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var go = function (y) { window.scrollTo({top: y, behavior: calm ? 'auto' : 'smooth'}); };
     var more = curtain.querySelector('.more');
-    if (more) more.addEventListener('click', function () { go(curtain.offsetHeight - bar.offsetHeight); });
+    if (more) more.addEventListener('click', function () { send(true); });
     // the logo of the bar lets the curtain down again
     var home = bar.querySelector('.home');
-    if (home) home.addEventListener('click', function (e) { e.preventDefault(); go(0); });
+    if (home) home.addEventListener('click', function (e) { e.preventDefault(); send(false); });
   }
 
   // ── the releases ─────────────────────────────────────────────────────

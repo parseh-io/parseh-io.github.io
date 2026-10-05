@@ -20,13 +20,11 @@
   src:url(fonts/texgyrechorus-mediumitalic.otf) format('opentype');font-display:swap}
 
 *{box-sizing:border-box}
-html{scroll-snap-type:y proximity;scroll-padding-top:var(--bar);
-  -webkit-text-size-adjust:100%}
+html{scroll-padding-top:var(--bar);-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;
   font-size:16px;line-height:1.5}
 a{color:var(--accent)}
-#top{scroll-snap-align:start}
 
 /* ── the curtain ─────────────────────────────────────────────────────────
    One screen of accent.  It is an ordinary block that scrolls away with the
@@ -50,6 +48,7 @@ a{color:var(--accent)}
 .hero .lat{font-family:'TeX Gyre Chorus','Apple Chancery','URW Chancery L',cursive;
   font-size:clamp(34px,min(7vw,7.5vh),68px);line-height:1;letter-spacing:.01em;
   margin-top:.42em}
+.hero .tag span{white-space:nowrap}
 .hero .tag{margin:clamp(14px,2.6vh,28px) 0 0;font-size:clamp(15px,min(2.6vw,2.6vh),21px);
   letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.94}
 
@@ -69,6 +68,8 @@ a{color:var(--accent)}
 .dl.phone:hover{transform:none;box-shadow:none}
 .dl.phone small{color:var(--on);opacity:.9}
 .dl[hidden]{display:none}
+
+.alpha{margin:14px 0 0;font-size:13.5px;opacity:.88;max-width:340px}
 
 /* the hint that there is something under the curtain */
 .more{position:absolute;left:50%;bottom:calc(var(--bar) + 6px);transform:translateX(-50%);
@@ -91,7 +92,7 @@ a{color:var(--accent)}
 /* a nastaliq line box is far taller than the letter: lift the ink to the middle */
 .bar .glyph i{font-style:normal;display:block;transform:translateY(-.62em)}
 .bar .name{font-family:'TeX Gyre Chorus','Apple Chancery',cursive;font-size:27px;line-height:1}
-.bar nav{display:flex;align-items:center;gap:2px}
+.bar nav{display:flex;align-items:center;gap:2px;flex-wrap:nowrap;white-space:nowrap}
 .bar nav a{color:inherit;text-decoration:none;font-size:15px;font-weight:550;
   padding:8px 12px;border-radius:999px}
 .bar nav a:hover,.bar nav a[aria-current]{background:rgba(255,255,255,.16)}
@@ -103,9 +104,12 @@ a{color:var(--accent)}
 .bar.alone{position:sticky;top:0;bottom:auto;z-index:10;background:var(--accent)}
 
 /* ── under the curtain: the sepia paper ───────────────────────────────── */
-main{scroll-snap-align:start;min-height:calc(100vh - var(--bar));
+main{min-height:calc(100vh - var(--bar));
   display:flex;flex-direction:column}
-@supports (height:100svh){main{min-height:calc(100svh - var(--bar))}}
+/* the LARGEST screen (a phone's, once its address bar has slid away): with
+   less than that under the curtain the page ends before the curtain is up,
+   and the bar is left taller than its one line */
+@supports (height:100lvh){main{min-height:calc(100lvh - var(--bar))}}
 .paper{flex:1;display:flex;align-items:center;justify-content:center;
   padding:48px 20px;text-align:center}
 .paper p{margin:0;font-family:'TeX Gyre Pagella','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
@@ -126,16 +130,42 @@ main{scroll-snap-align:start;min-height:calc(100vh - var(--bar));
   border-radius:999px;padding:7px 15px}
 .releases a.zip:hover{background:var(--accentlt)}
 .note{color:var(--dim);font-size:15px}
+.examples{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:14px}
+.examples a.ex{display:block;background:var(--card);border:1px solid var(--rule);border-radius:12px;
+  padding:18px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s ease}
+.examples a.ex:hover{border-color:var(--accent)}
+.examples b{display:block;font-size:19px;font-weight:650;margin-bottom:4px}
+.examples span{display:block;color:var(--dim);font-size:15px}
+.examples i{display:inline-block;margin-top:12px;font-style:normal;font-weight:650;font-size:15px;
+  color:var(--on);background:var(--accent);border-radius:999px;padding:6px 15px}
+/* an example: the bar, one line saying where one is, and the exported page
+   itself in a frame that takes the rest of the screen */
+body.framed{height:100vh;display:flex;flex-direction:column;overflow:hidden}
+@supports (height:100dvh){body.framed{height:100dvh}}
+body.framed .bar.alone{position:static;flex:none}
+.crumb{flex:none;margin:0;padding:7px 16px;font-size:14px;color:var(--dim);background:var(--card);
+  border-bottom:1px solid var(--rule);display:flex;gap:8px;align-items:baseline;white-space:nowrap}
+.crumb b{color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.crumb .alone{margin-left:auto}
+iframe.deck{flex:1;min-height:0;width:100%;border:0;background:var(--card)}
+.credit{flex:none;margin:0;padding:6px 16px;font-size:12px;line-height:1.35;color:var(--dim);
+  background:var(--card);border-top:1px solid var(--rule)}
 .onphone{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);
   border-radius:8px;padding:12px 16px;margin:0 0 18px}
 footer{padding:18px 20px 26px;text-align:center;font-size:13px;color:var(--faint)}
 footer a{color:var(--dim)}
 
 @media (max-width:520px){
-  :root{--bar:52px}
+  :root{--bar:44px}
+  .bar{gap:2px;padding:0 max(10px,env(safe-area-inset-right)) 0 max(10px,env(safe-area-inset-left))}
   .bar .name{display:none}
-  .bar nav a{padding:8px 9px;font-size:14.5px}
-  .hero .tag{letter-spacing:.09em}
+  .bar .glyph{width:28px;height:28px;font-size:12.5px}
+  .bar nav{gap:0}
+  .bar nav a{padding:5px 8px;font-size:14px}
+  .bar .lang{width:26px;height:26px;margin-left:4px;border-width:1.5px}
+  /* too narrow for one line: three, with the & alone in the middle */
+  .hero .tag span{display:block}
+  .hero .tag{line-height:1.55}
 }
 /* a low, wide screen (a phone on its side): keep the button on the screen */
 @media (max-height:520px){
@@ -144,6 +174,7 @@ footer a{color:var(--dim)}
   .hero .tag{margin-top:8px}
   .dl.phone{max-width:560px;border-radius:16px}
   .dl small{font-size:12.5px}
+  .alpha{margin-top:6px;font-size:12.5px;max-width:none}
   .dl{margin-top:12px;padding:7px 18px 7px 14px}
   .more{width:30px;height:30px;bottom:calc(var(--bar) - 14px)}
 }
