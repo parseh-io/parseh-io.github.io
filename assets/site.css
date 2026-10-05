@@ -1,0 +1,153 @@
+/* parseh.io -- Parseh's colours and faces, as lib/parseh.css in the Parseh
+   repository names them: the accent (Viva Magenta) and the sepia paper. */
+:root{
+  --accent:#be3455;
+  --accentlt:#ce5b78;
+  --on:#ffffff;        /* text on the accent */
+  --bg:#ece5d4;        /* sepia: the ground */
+  --card:#f8f3e6;      /* sepia: the sheet */
+  --ink:#3c3425;
+  --dim:#6f6653;
+  --faint:#9d9078;
+  --rule:#d8cfba;
+  --bar:56px;          /* the height the curtain keeps once it is up */
+  --p:0;               /* how far up the curtain is, 0..1 (site.js) */
+}
+
+@font-face{font-family:'Noto Nastaliq Urdu';
+  src:url(fonts/NotoNastaliqUrdu.woff2) format('woff2');font-display:block}
+@font-face{font-family:'TeX Gyre Chorus';
+  src:url(fonts/texgyrechorus-mediumitalic.otf) format('opentype');font-display:swap}
+
+*{box-sizing:border-box}
+html{scroll-snap-type:y proximity;scroll-padding-top:var(--bar);
+  -webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;
+  font-size:16px;line-height:1.5}
+a{color:var(--accent)}
+#top{scroll-snap-align:start}
+
+/* ── the curtain ─────────────────────────────────────────────────────────
+   One screen of accent.  It is an ordinary block that scrolls away with the
+   page, and STICKS when only its last --bar pixels are left: that strip is
+   the top bar.  Nothing here needs a script; site.js only tells the CSS how
+   far up the curtain is (--p), so the words fade out and the bar fades in. */
+.curtain{position:sticky;top:calc(var(--bar) - 100vh);height:100vh;z-index:10;
+  background:var(--accent);color:var(--on);overflow:hidden}
+@supports (height:100svh){
+  .curtain{top:calc(var(--bar) - 100svh);height:100svh}
+}
+
+.hero{position:absolute;inset:0 0 var(--bar) 0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:0 20px 5vh;opacity:calc(1 - var(--p) * 1.7)}
+.hero h1{margin:0;font-weight:400;display:flex;flex-direction:column;align-items:center}
+/* the name is Persian, whatever is being learned */
+.hero .fa{font-family:'Noto Nastaliq Urdu',serif;direction:rtl;
+  font-size:clamp(84px,min(24vw,26vh),230px);line-height:1.75;
+  margin-top:-.38em}
+.hero .lat{font-family:'TeX Gyre Chorus','Apple Chancery','URW Chancery L',cursive;
+  font-size:clamp(34px,min(7vw,7.5vh),68px);line-height:1;letter-spacing:.01em;
+  margin-top:.42em}
+.hero .tag{margin:clamp(14px,2.6vh,28px) 0 0;font-size:clamp(15px,min(2.6vw,2.6vh),21px);
+  letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.94}
+
+.dl{margin-top:clamp(30px,8.5vh,96px);display:inline-flex;align-items:center;gap:14px;
+  padding:13px 26px 13px 20px;border-radius:999px;background:var(--on);color:var(--accent);
+  text-decoration:none;text-align:left;box-shadow:0 6px 22px rgba(60,10,25,.25);
+  transition:transform .15s ease,box-shadow .15s ease}
+.dl:hover{transform:translateY(-1px);box-shadow:0 9px 26px rgba(60,10,25,.32)}
+.dl:focus-visible,.bar a:focus-visible,.bar button:focus-visible,.more:focus-visible{
+  outline:3px solid var(--on);outline-offset:3px}
+.dl svg{width:26px;height:26px;flex:none}
+.dl b{display:block;font-size:17px;font-weight:650;line-height:1.25}
+.dl small{display:block;font-size:13px;line-height:1.3;color:var(--dim)}
+/* on a phone or a tablet there is nothing to download: a notice, not a button */
+.dl.phone{background:none;color:var(--on);border:1.5px solid rgba(255,255,255,.75);
+  box-shadow:none;max-width:340px;border-radius:22px;cursor:default}
+.dl.phone:hover{transform:none;box-shadow:none}
+.dl.phone small{color:var(--on);opacity:.9}
+.dl[hidden]{display:none}
+
+/* the hint that there is something under the curtain */
+.more{position:absolute;left:50%;bottom:calc(var(--bar) + 6px);transform:translateX(-50%);
+  width:44px;height:44px;border:0;background:none;color:var(--on);cursor:pointer;
+  opacity:calc(1 - var(--p) * 4);padding:6px}
+.more svg{width:100%;height:100%;animation:nod 2.2s ease-in-out infinite}
+@keyframes nod{0%,100%{transform:translateY(-6px)}50%{transform:translateY(5px)}}
+
+/* ── the bar: the curtain's last strip, and the head of every other page ── */
+.bar{position:absolute;left:0;right:0;bottom:0;height:var(--bar);
+  display:flex;align-items:center;gap:6px;padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));
+  color:var(--on)}
+.js .curtain .bar{opacity:calc((var(--p) - .55) / .45);visibility:hidden}
+.js .curtain.up .bar,.js .curtain.rising .bar{visibility:visible}
+.bar .home{display:inline-flex;align-items:center;gap:10px;margin-right:auto;
+  color:inherit;text-decoration:none}
+.bar .glyph{font-family:'Noto Nastaliq Urdu',serif;font-size:15px;line-height:1;
+  width:34px;height:34px;border-radius:50%;background:var(--on);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;flex:none}
+/* a nastaliq line box is far taller than the letter: lift the ink to the middle */
+.bar .glyph i{font-style:normal;display:block;transform:translateY(-.62em)}
+.bar .name{font-family:'TeX Gyre Chorus','Apple Chancery',cursive;font-size:27px;line-height:1}
+.bar nav{display:flex;align-items:center;gap:2px}
+.bar nav a{color:inherit;text-decoration:none;font-size:15px;font-weight:550;
+  padding:8px 12px;border-radius:999px}
+.bar nav a:hover,.bar nav a[aria-current]{background:rgba(255,255,255,.16)}
+.bar .lang{width:34px;height:34px;margin-left:8px;padding:0;border-radius:50%;
+  border:2px solid var(--on);background:none;overflow:hidden;cursor:default;flex:none}
+.bar .lang svg{display:block;width:100%;height:100%}
+
+/* a page with no curtain: the bar alone, at the top */
+.bar.alone{position:sticky;top:0;bottom:auto;z-index:10;background:var(--accent)}
+
+/* ── under the curtain: the sepia paper ───────────────────────────────── */
+main{scroll-snap-align:start;min-height:calc(100vh - var(--bar));
+  display:flex;flex-direction:column}
+@supports (height:100svh){main{min-height:calc(100svh - var(--bar))}}
+.paper{flex:1;display:flex;align-items:center;justify-content:center;
+  padding:48px 20px;text-align:center}
+.paper p{margin:0;font-family:'TeX Gyre Pagella','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  font-size:clamp(22px,4vw,34px);color:var(--dim)}
+.sheet{width:100%;max-width:760px;margin:0 auto;padding:36px 20px 64px}
+.sheet h1{font-family:'TeX Gyre Pagella','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  font-weight:400;font-size:34px;margin:0 0 6px}
+.sheet .sub{color:var(--dim);margin:0 0 26px}
+.releases{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.releases li{background:var(--card);border:1px solid var(--rule);border-radius:12px;
+  padding:14px 18px;display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap}
+.releases .v{font-size:19px;font-weight:650}
+.releases .newest{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--on);background:var(--accent);border-radius:999px;padding:2px 9px}
+.releases .when{color:var(--dim);font-size:14px;margin-right:auto}
+.releases a{font-size:15px}
+.releases a.zip{font-weight:650;text-decoration:none;color:var(--on);background:var(--accent);
+  border-radius:999px;padding:7px 15px}
+.releases a.zip:hover{background:var(--accentlt)}
+.note{color:var(--dim);font-size:15px}
+.onphone{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);
+  border-radius:8px;padding:12px 16px;margin:0 0 18px}
+footer{padding:18px 20px 26px;text-align:center;font-size:13px;color:var(--faint)}
+footer a{color:var(--dim)}
+
+@media (max-width:520px){
+  :root{--bar:52px}
+  .bar .name{display:none}
+  .bar nav a{padding:8px 9px;font-size:14.5px}
+  .hero .tag{letter-spacing:.09em}
+}
+/* a low, wide screen (a phone on its side): keep the button on the screen */
+@media (max-height:520px){
+  .hero{padding-bottom:22px}
+  .hero .fa{font-size:clamp(60px,21vh,120px)}
+  .hero .tag{margin-top:8px}
+  .dl.phone{max-width:560px;border-radius:16px}
+  .dl small{font-size:12.5px}
+  .dl{margin-top:12px;padding:7px 18px 7px 14px}
+  .more{width:30px;height:30px;bottom:calc(var(--bar) - 14px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .more svg{animation:none}
+  .dl{transition:none}
+}
