@@ -17,6 +17,12 @@ The site of [Parseh](https://github.com/Addicted2BayesianEpistemology/Parseh), s
 
 The guide is not here: it is published at `parseh.io/guide` by the repository `guide` of the same organisation.
 
+## When the stylesheet or the script changes
+
+Every page asks for `assets/site.css?v=N` and `assets/site.js?v=N`. A browser keeps those two files for ten minutes
+(GitHub Pages says so), so a page that is new with a stylesheet that is old comes out unstyled. Raise `N` in every
+page whenever either file changes, so the new pages ask for the new files.
+
 ## Where the releases are
 
 `REPO` at the top of `assets/site.js`, and the plain links (the ones that work with scripts off) in
