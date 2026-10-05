@@ -27,6 +27,20 @@ Only that excerpt is copied, with its glosses in HTML templates; no audio, full 
 Hover, click/tap or keyboard focus opens a gloss; Escape, the close button or an outside click dismisses it.
 The two front-page sheets stretch to equal heights on a wide screen and take their own heights when stacked.
 
+## The homepage exercise
+
+`assets/exercise-demo.html` is a single English fill-in-the-blanks exercise made by Parseh's document exporter.
+It keeps the app's word bank, mouse/touch/keyboard interaction, answer checking, explanations and fonts.
+Only the surrounding page bar, footer and margins are adjusted for the homepage's automatically sized frame.
+Its source is `examples/sources/homepage-exercise.md`. To rebuild it without rebuilding the other examples:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /path/to/parseh's/python3 examples/sources/build-homepage-exercise.py /path/to/Parseh
+```
+
+Raise the frame's `?v=N` in `index.html` after rebuilding. The embedded TeX Gyre Pagella and Heros fonts have
+the same GUST licence as the other TeX Gyre font below.
+
 ## When the stylesheet or the script changes
 
 Every page asks for `assets/site.css?v=N` and `assets/site.js?v=N`. A browser keeps those two files for ten minutes

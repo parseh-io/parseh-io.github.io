@@ -110,6 +110,27 @@
     if (home) home.addEventListener('click', function (e) { e.preventDefault(); send(false); });
   }
 
+  // ── the exported exercise ────────────────────────────────────────────
+  // The same-origin frame keeps Parseh's CSS and exercise runtime intact.
+  // Follow its content height as words move and the explanation appears.
+  var exerciseFrame = document.querySelector('.exercise-demo');
+  if (exerciseFrame) {
+    var exerciseObserver;
+    function fitExercise() {
+      var body = exerciseFrame.contentDocument && exerciseFrame.contentDocument.body;
+      if (!body || !body.querySelector('.exercise')) return;
+      if (exerciseObserver) exerciseObserver.disconnect();
+      var fit = function () {
+        exerciseFrame.style.height = Math.ceil(body.getBoundingClientRect().height) + 'px';
+      };
+      fit();
+      exerciseObserver = new ResizeObserver(fit);
+      exerciseObserver.observe(body);
+    }
+    exerciseFrame.addEventListener('load', fitExercise);
+    if (exerciseFrame.contentDocument && exerciseFrame.contentDocument.readyState === 'complete') fitExercise();
+  }
+
   // ── the reading sample ───────────────────────────────────────────────
   // Static, local phrase glosses; no reader runtime, audio or network needed.
   var reader = document.querySelector('.reader-demo');
