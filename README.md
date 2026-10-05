@@ -5,17 +5,27 @@ The site of [Parseh](https://github.com/Addicted2BayesianEpistemology/Parseh), s
 
 | File | What it is |
 |---|---|
-| `index.html` | The front page: the curtain (one screen of Parseh's accent) and, under it, the sepia paper. |
+| `index.html` | The front page: the curtain (one screen of Parseh's accent), then two sepia sheets for spaced repetition and language learning, with a small interactive book excerpt. |
 | `downloads/index.html` | Every released version, read from GitHub when the page opens. |
 | `examples/index.html` | The list of examples. |
 | `examples/<name>/index.html`, `deck.html` | One example: `deck.html` is a deck exported by Parseh itself ("Export selected to HTML"), untouched; `index.html` shows it in a frame under the site's bar. |
 | `examples/sources/` | What the examples are made from: the exercises of each deck as Markdown, their pictures, and `build.py`, which has a Parseh checkout make the decks again. |
 | `404.html` | What any address with no page answers, under the whole domain (the guide's too). |
 | `assets/site.css` | Parseh's colours and faces. The curtain is CSS alone: a block that sticks when only its last strip, the bar, is left. |
-| `assets/site.js` | How far up the curtain is (the words fade, the bar appears); the latest release and the list of releases; the notice a phone gets instead of the download button. |
+| `assets/site.js` | How far up the curtain is (the words fade, the bar appears); the excerpt's phrase glosses; the latest release and the list of releases; the notice a phone gets instead of the download button. |
 | `CNAME` | The domain GitHub Pages serves this repository at. |
 
 The guide is not here: it is published at `parseh.io/guide` by the repository `guide` of the same organisation.
+The front page links to its `exercises/`, `studio/`, `books/` and `videos/` sections, ready for the guide update in a0.4.4.
+
+## The reading sample
+
+The front page includes the first two complete sentences of *The Blind Owl* (*Boof-e-koor*) by Sadeq Hedayat.
+The Persian text, transliterations, vocabulary notes and meanings are taken from the generated
+`books/persian/boof-e-koor/reader/index.html` in `Parseh-mine`: reading units 1.1 through 1.5, chunks 0 through 42.
+Only that excerpt is copied, with its glosses in HTML templates; no audio, full book or Parseh runtime is loaded.
+Hover, click/tap or keyboard focus opens a gloss; Escape, the close button or an outside click dismisses it.
+The two front-page sheets stretch to equal heights on a wide screen and take their own heights when stacked.
 
 ## When the stylesheet or the script changes
 
@@ -55,6 +65,7 @@ BY-NC-SA. The pages that show them say so.
 ## Fonts
 
 `assets/fonts/NotoNastaliqUrdu.woff2` — Noto Nastaliq Urdu, © 2014 Google Inc., SIL Open Font License 1.1
-(`assets/fonts/OFL.txt`). `assets/fonts/texgyrechorus-mediumitalic.otf` — TeX Gyre Chorus, © B. Jackowski,
-J. M. Nowacki and the TeX users groups, GUST Font License (`assets/fonts/GUST-FONT-LICENSE.txt`). Neither is
-Parseh's work.
+(`assets/fonts/OFL.txt`). `assets/fonts/Vazirmatn.woff2` — Vazirmatn, © 2015 The Vazirmatn Project Authors,
+SIL Open Font License 1.1 (same licence file). `assets/fonts/texgyrechorus-mediumitalic.otf` — TeX Gyre Chorus, © B. Jackowski,
+J. M. Nowacki and the TeX users groups, GUST Font License (`assets/fonts/GUST-FONT-LICENSE.txt`). These fonts are
+not Parseh's work.

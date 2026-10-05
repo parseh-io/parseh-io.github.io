@@ -110,6 +110,90 @@
     if (home) home.addEventListener('click', function (e) { e.preventDefault(); send(false); });
   }
 
+  // ── the reading sample ───────────────────────────────────────────────
+  // Static, local phrase glosses; no reader runtime, audio or network needed.
+  var reader = document.querySelector('.reader-demo');
+  if (reader) {
+    var cloud = reader.querySelector('.reader-gloss');
+    var cloudBody = reader.querySelector('#reader-gloss-body');
+    var phrase = null, pinned = false, leaving = 0, suppressFocus = false;
+
+    function placeGloss() {
+      if (!phrase || cloud.hidden) return;
+      var rect = phrase.getBoundingClientRect();
+      var topBar = parseFloat(getComputedStyle(root).getPropertyValue('--bar')) || 56;
+      var edge = 12, height = cloud.offsetHeight, width = cloud.offsetWidth;
+      var left = Math.max(edge, Math.min(rect.left + (rect.width - width) / 2,
+        window.innerWidth - width - edge));
+      var top = rect.top - height - 10;
+      if (top < topBar + edge) top = rect.bottom + 10;
+      top = Math.max(topBar + edge, Math.min(top, window.innerHeight - height - edge));
+      cloud.style.left = left + 'px';
+      cloud.style.top = top + 'px';
+    }
+    function hideGloss() {
+      clearTimeout(leaving);
+      if (phrase) {
+        phrase.setAttribute('aria-expanded', 'false');
+        phrase.removeAttribute('aria-describedby');
+      }
+      phrase = null; pinned = false; cloud.hidden = true;
+    }
+    function showGloss(target, pin) {
+      clearTimeout(leaving);
+      if (phrase !== target) {
+        hideGloss();
+        var template = document.getElementById(target.getAttribute('data-gloss'));
+        if (!template) return;
+        cloudBody.replaceChildren(template.content.cloneNode(true));
+        phrase = target;
+        phrase.setAttribute('aria-expanded', 'true');
+        phrase.setAttribute('aria-describedby', 'reader-gloss-body');
+      }
+      pinned = pin; cloud.hidden = false; placeGloss();
+    }
+    function leaveGloss() {
+      clearTimeout(leaving);
+      leaving = setTimeout(function () {
+        if (!pinned && !cloud.matches(':hover') && !cloud.contains(document.activeElement) &&
+            (!phrase || document.activeElement !== phrase)) hideGloss();
+      }, 160);
+    }
+    reader.querySelectorAll('.reader-phrase').forEach(function (target) {
+      target.addEventListener('pointerenter', function (event) {
+        if (event.pointerType !== 'touch') showGloss(target, false);
+      });
+      target.addEventListener('pointerleave', leaveGloss);
+      target.addEventListener('focus', function () {
+        if (!suppressFocus) showGloss(target, false);
+      });
+      target.addEventListener('blur', leaveGloss);
+      target.addEventListener('click', function () {
+        if (phrase === target && pinned) hideGloss();
+        else showGloss(target, true);
+      });
+    });
+    cloud.addEventListener('pointerenter', function () { clearTimeout(leaving); });
+    cloud.addEventListener('pointerleave', leaveGloss);
+    cloud.addEventListener('focusout', leaveGloss);
+    function dismissGloss() {
+      var returnTo = phrase, restore = cloud.contains(document.activeElement);
+      hideGloss();
+      if (restore && returnTo) {
+        suppressFocus = true; returnTo.focus({preventScroll: true}); suppressFocus = false;
+      }
+    }
+    cloud.querySelector('.gloss-close').addEventListener('click', dismissGloss);
+    document.addEventListener('pointerdown', function (event) {
+      if (!cloud.contains(event.target) && !event.target.closest('.reader-phrase')) hideGloss();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !cloud.hidden) { dismissGloss(); event.preventDefault(); }
+    });
+    window.addEventListener('scroll', hideGloss, {passive: true});
+    window.addEventListener('resize', placeGloss);
+  }
+
   // ── the releases ─────────────────────────────────────────────────────
   var button = document.querySelector('[data-latest]');
   var list = document.querySelector('[data-releases]');

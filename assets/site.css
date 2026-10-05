@@ -18,6 +18,8 @@
   src:url(fonts/NotoNastaliqUrdu.woff2) format('woff2');font-display:block}
 @font-face{font-family:'TeX Gyre Chorus';
   src:url(fonts/texgyrechorus-mediumitalic.otf) format('opentype');font-display:swap}
+@font-face{font-family:Vazirmatn;src:url(fonts/Vazirmatn.woff2) format('woff2');
+  font-weight:100 900;font-display:swap}
 
 *{box-sizing:border-box}
 html{scroll-padding-top:var(--bar);-webkit-text-size-adjust:100%}
@@ -114,6 +116,81 @@ main{min-height:calc(100vh - var(--bar));
   padding:48px 20px;text-align:center}
 .paper p{margin:0;font-family:'TeX Gyre Pagella','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
   font-size:clamp(22px,4vw,34px);color:var(--dim)}
+
+/* The hub's two uses: the grid stretches both sheets to the taller one.
+   A single column on a small screen lets each sheet take its own height. */
+.features{width:100%;max-width:1280px;margin:0 auto;padding:48px 24px 36px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.feature{min-width:0;display:flex;flex-direction:column;background:var(--card);
+  border:1px solid var(--rule);border-radius:12px;padding:30px}
+.feature .feature-label{margin:0 0 8px;color:var(--dim);font-size:12px;
+  font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.feature h2{font-family:'TeX Gyre Pagella','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  font-weight:400;font-size:clamp(28px,3vw,36px);line-height:1.2;margin:0 0 10px}
+.feature p{margin:0 0 16px}
+.feature h3{font-size:19px;font-weight:650;line-height:1.3;margin:12px 0 10px}
+.feature a{text-underline-offset:3px}
+.feature a:focus-visible,.gloss-close:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.feature-links{margin-top:auto;padding-top:24px}
+.feature-examples{display:inline-flex;align-items:center;gap:12px;color:var(--on);
+  background:var(--accent);border-radius:999px;padding:9px 18px;
+  text-decoration:none;font-weight:600;font-size:15px}
+.feature-examples:hover{background:var(--accentlt)}
+.guide-links{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:14px;font-size:14px}
+
+/* A small reading edition, using the actual reader's face,
+   dotted underlines and gloss cloud. Only the excerpt is included. */
+.reader-demo{margin:8px 0 24px;background:var(--bg);border:1px solid var(--rule);
+  border-radius:10px;min-width:0}
+.reader-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 16px;border-bottom:1px solid var(--rule);background:var(--card);
+  border-radius:10px 10px 0 0}
+.reader-book{min-width:0;display:block;font-size:13px}
+.reader-book b{display:block;font-weight:650}
+.reader-book b span{display:inline-block;font-family:Vazirmatn,serif;margin-left:6px}
+.reader-book>span{display:block;color:var(--dim);font-size:11.5px;margin-top:2px}
+.reader-mode{flex:none;border:1px solid var(--accent);border-radius:6px;padding:3px 7px;
+  font-size:11px;white-space:nowrap;color:var(--accent)}
+.feature .reader-hint{font-size:12px;line-height:1.5;color:var(--dim);margin:0;padding:12px 16px 0}
+.reader-text{padding:12px 18px 20px;font-family:Vazirmatn,'Noto Naskh Arabic',serif;
+  font-size:18px;line-height:2.15;text-align:start}
+.feature .reader-text p{margin:0 0 14px}
+.feature .reader-text p:last-child{margin-bottom:0}
+.reader-phrase{display:inline;margin:0;padding:0;border:0;border-radius:4px;
+  font:inherit;color:inherit;background:none;cursor:pointer;text-align:inherit;
+  text-decoration:underline dotted var(--faint) 1px;text-decoration-skip-ink:none;
+  text-underline-offset:7px;touch-action:manipulation}
+.reader-phrase:hover,.reader-phrase[aria-expanded="true"]{background:var(--card);
+  box-shadow:0 0 0 3px var(--card),0 2px 8px rgba(0,0,0,.14);text-decoration-color:var(--accent)}
+.reader-phrase:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.reader-gloss{position:fixed;z-index:20;width:340px;max-width:calc(100vw - 24px);
+  max-height:calc(100vh - var(--bar) - 28px);overflow:auto;
+  background:var(--card);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:0 8px 28px rgba(0,0,0,.22);padding:12px 14px;
+  font-size:13px;color:var(--dim);line-height:1.5;text-align:left}
+@supports (height:100dvh){.reader-gloss{max-height:calc(100dvh - var(--bar) - 28px)}}
+.reader-gloss[hidden]{display:none}
+.reader-gloss .fa{font-family:Vazirmatn,'Noto Naskh Arabic',serif;
+  font-size:17px;line-height:1.9;color:var(--ink);padding-left:28px;text-align:right}
+.reader-gloss .tr{font-style:italic;color:var(--ink);margin-top:3px}
+.reader-gloss .voc{margin-top:7px;padding-top:7px;border-top:1px solid var(--rule)}
+.reader-gloss .en{margin-top:7px;padding-top:7px;border-top:1px solid var(--rule);color:var(--ink)}
+.reader-gloss bdi.v{font-family:Vazirmatn,'Noto Naskh Arabic',serif;font-size:14px;color:var(--ink)}
+.gloss-close{position:absolute;top:7px;left:7px;width:28px;height:28px;
+  border:0;border-radius:6px;background:none;color:var(--dim);font:22px/1 sans-serif;cursor:pointer}
+.gloss-close:hover{background:var(--bg);color:var(--accent)}
+@media (hover:none){.gloss-close{width:40px;height:40px;top:3px;left:3px}
+  .reader-gloss .fa{padding-left:36px}}
+@media (max-width:800px){
+  .features{grid-template-columns:minmax(0,1fr);max-width:660px;padding:28px 16px;gap:20px}
+  .feature{padding:24px}
+}
+@media (max-width:380px){
+  .features{padding:20px 12px}
+  .feature{padding:20px 16px}
+  .reader-bar{padding:10px 12px;gap:8px;flex-wrap:wrap}
+  .reader-text{padding:12px 14px 18px}
+}
 .sheet{width:100%;max-width:760px;margin:0 auto;padding:36px 20px 64px}
 .sheet h1{font-family:'TeX Gyre Pagella','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
   font-weight:400;font-size:34px;margin:0 0 6px}
