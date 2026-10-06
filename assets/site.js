@@ -12,6 +12,24 @@
   var root = document.documentElement;
   root.classList.add('js');
 
+  // Hide separators at line ends, retaining their space so wrapping stays stable.
+  var languages = document.querySelector('.supported-languages');
+  if (languages) {
+    var languageItems = Array.from(languages.children);
+    var updateSeparators = function () {
+      var tops = languageItems.map(function (item) { return item.offsetTop; });
+      languageItems.forEach(function (item, i) {
+        var separator = item.querySelector('span');
+        if (separator) separator.style.visibility =
+          i === languageItems.length - 1 || tops[i] !== tops[i + 1] ? 'hidden' : '';
+      });
+    };
+    var languageObserver = new ResizeObserver(updateSeparators);
+    languageObserver.observe(languages);
+    languageItems.forEach(function (item) { languageObserver.observe(item); });
+    updateSeparators();
+  }
+
   // ── the curtain ──────────────────────────────────────────────────────
   // It is either down or up.  One turn of the wheel, one key, one swipe sends
   // it all the way; nothing leaves it half open.

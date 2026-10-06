@@ -53,8 +53,11 @@ a{color:var(--accent)}
 .hero .tag span{white-space:nowrap}
 .hero .tag{margin:clamp(14px,2.6vh,28px) 0 0;font-size:clamp(15px,min(2.6vw,2.6vh),21px);
   letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.94}
-.hero .supported-languages{max-width:650px;margin:16px 0 0;font-size:14px;
-  line-height:1.6;text-wrap:balance;opacity:.92}
+.hero .supported-languages{display:flex;flex-wrap:wrap;justify-content:center;
+  gap:0 .62em;max-width:820px;margin:16px 0 0;padding:0;list-style:none;
+  font-family:Georgia,'Noto Serif',serif;font-size:14px;line-height:1.6;opacity:.92}
+.supported-languages li{display:inline-flex;align-items:baseline;gap:.62em;white-space:nowrap}
+.supported-languages bdi:lang(fa),.supported-languages bdi:lang(ar){font-family:Vazirmatn,sans-serif}
 
 .dl{margin-top:clamp(20px,5vh,56px);display:inline-flex;align-items:center;gap:14px;
   padding:13px 26px 13px 20px;border-radius:999px;background:var(--on);color:var(--accent);
