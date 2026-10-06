@@ -1,0 +1,39 @@
+Licensing for the parseh.io website
+Copyright (c) 2026 Bruno Ursino
+
+This repository contains separately licensed code, content and third-party
+material. It is not covered by a single blanket license.
+
+MIT LICENSE — WEBSITE CODE
+The MIT license in LICENSES/MIT.txt applies to:
+- assets/site.css and assets/site.js;
+- examples/sources/build.py and examples/sources/build-homepage-exercise.py;
+- the functional HTML markup, inline CSS and JavaScript in index.html,
+  404.html, downloads/index.html, examples/index.html,
+  examples/english-basics/index.html, examples/maths-and-chemistry/index.html
+  and licensing/index.html;
+- technical documentation in README.md.
+
+In HTML files, this grant covers structure and functionality, not embedded
+editorial prose, exercise content, literary passages, artwork or branding.
+Generic interface labels needed to operate the code are included in the MIT
+grant. Layout, colors, styling and interactions may be reused and modified.
+The content and brand policy imposes no additional conditions on MIT code.
+
+CONTENT AND BRANDING
+Rights in original website prose, exercises, illustrations and branding are
+reserved except for the permissions in licensing/index.html, published at
+https://parseh.io/licensing/. That policy permits normal website use and
+sharing for discussion, education, reviews and promotion, including commercial
+coverage. It does not claim ownership of third-party or public-domain material.
+The original exercise content in examples/sources/*.md is not MIT-licensed.
+
+EXCEPTIONS AND EXISTING RIGHTS
+assets/exercise-demo.html and examples/*/deck.html contain Parseh code with
+GPL-3.0-or-later notices, separately licensed fonts and other material. They
+are excluded from the MIT grant above. See THIRD_PARTY_NOTICES.md and the
+license texts in LICENSES/ and assets/fonts/ for existing terms.
+
+This notice does not change the Parseh application's GPL license, the separate
+guide repository's terms, third-party licenses, rights previously granted,
+rights under GitHub's terms, or exceptions and limitations under applicable law.

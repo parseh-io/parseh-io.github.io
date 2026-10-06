@@ -83,3 +83,24 @@ BY-NC-SA. The pages that show them say so.
 SIL Open Font License 1.1 (same licence file). `assets/fonts/texgyrechorus-mediumitalic.otf` — TeX Gyre Chorus, © B. Jackowski,
 J. M. Nowacki and the TeX users groups, GUST Font License (`assets/fonts/GUST-FONT-LICENSE.txt`). These fonts are
 not Parseh's work.
+
+## Licensing and sharing
+
+Copyright © 2026 Bruno Ursino. This is a mixed-license repository:
+
+- The original website code specified in [LICENSE](LICENSE) is available under
+  [MIT](LICENSES/MIT.txt), including reusable layout and styling. The grant
+  excludes embedded prose, exercise content, artwork and branding.
+- Original content and branding have reserved rights with explicit permission
+  for screenshots, recordings, short excerpts and identifying logo use in
+  discussion, education, reviews and promotion, including commercial coverage.
+  Read the [content and brand policy](licensing/index.html), published at
+  <https://parseh.io/licensing/>.
+- Embedded Parseh export code retains GPL-3.0-or-later; fonts, pictograms and
+  MathJax retain their separate licenses. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+  The literary excerpt is not claimed as original website material.
+
+These terms do not change the separate Parseh application or guide licenses.
+When contributing, identify whether a change is code, original content or
+third-party material, and preserve its applicable notices. Do not assume that
+an entire HTML file has one license merely because it contains MIT markup.
