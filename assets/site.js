@@ -6,7 +6,7 @@
 
   // WHERE PARSEH'S RELEASES ARE.  The one place to change when the repository
   // moves (and the plain links in index.html, downloads/index.html, 404.html).
-  var REPO = 'Addicted2BayesianEpistemology/Parseh';
+  var REPO = 'parseh-io/Parseh';
   var API = 'https://api.github.com/repos/' + REPO + '/releases?per_page=100';
 
   var root = document.documentElement;

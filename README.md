@@ -1,6 +1,6 @@
 # parseh.io
 
-The site of [Parseh](https://github.com/Addicted2BayesianEpistemology/Parseh), served by GitHub Pages at
+The site of [Parseh](https://github.com/parseh-io/Parseh), served by GitHub Pages at
 <https://parseh.io>. Plain files, no build: what is committed on `main` is what is published.
 
 | File | What it is |

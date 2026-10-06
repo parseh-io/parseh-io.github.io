@@ -40,8 +40,6 @@ def main(parseh, texmf=None):
     import webexport
     # the studio's server hands the renderer its LaTeX drawer; so must this
     htmlgen.set_latex(latexdraw.draw, latexdraw.draw_all, settings=None, peek=latexdraw.peek)
-    # the guide's address that never moves
-    webexport.GUIDE = "https://parseh.io/guide"
     if texmf:
         texpackages.TREE = str(Path(texmf).resolve())
     with tempfile.TemporaryDirectory() as tmp:
